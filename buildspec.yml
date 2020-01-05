@@ -1,0 +1,44 @@
+version: 0.2
+
+
+phases:
+  install:
+    commands:
+      - apt-get install gcc cmake zlibc libssl-dev
+      - wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz -O /tmp/protobuf-all-3.6.1.tar.gz
+      - tar xzf /tmp/protobuf-all-3.6.1.tar.gz
+      - cd "protobuf-3.6.1"
+      - mkdir -p build
+      - cd build
+      - cmake ../cmake
+      - make
+      - sudo make install
+      - cd $TRAVIS_BUILD_DIR
+      - git clone https://github.com/catchorg/Catch2.git
+      - cd Catch2
+      - mkdir -p build
+      - cd build
+      - cmake ../
+      - make
+      - sudo make install
+      - wget https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.gz -O /tmp/boost.tar.gz
+      - tar xzf /tmp/boost.tar.gz
+      - cd boost_1_69_0
+      - ./bootstrap.sh
+      - sudo ./b2 install
+  build:
+    commands:
+      - echo Entered the build phase...
+      - mkdir build
+      - cd build
+      - cmake ../
+      - make
+    finally:
+      - echo This always runs even if the install command fails
+  post_build:
+    commands:
+      - echo Entered the post_build phase...
+artifacts:
+  files:
+    - build/*
+  discard-paths: yes
