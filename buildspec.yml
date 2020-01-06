@@ -14,20 +14,20 @@ phases:
       - cd build
       - cmake ../cmake
       - make
-      - sudo make install
-      - cd $TRAVIS_BUILD_DIR
+      - make install
+      - cd $CODEBUILD_SRC_DIR #fix this
       - git clone https://github.com/catchorg/Catch2.git
       - cd Catch2
       - mkdir -p build
       - cd build
       - cmake ../
       - make
-      - sudo make install
+      - make install
       - wget https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.gz -O /tmp/boost.tar.gz
       - tar xzf /tmp/boost.tar.gz
       - cd boost_1_69_0
       - ./bootstrap.sh
-      - sudo ./b2 install
+      - ./b2 install
   build:
     commands:
       - echo Entered the build phase...
