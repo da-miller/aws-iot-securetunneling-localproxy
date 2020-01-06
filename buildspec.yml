@@ -6,7 +6,7 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - apt-get install gcc cmake zlibc libssl-dev
+      - apt-get install -y gcc cmake zlibc libssl-dev
       - wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz -O /tmp/protobuf-all-3.6.1.tar.gz
       - tar xzf /tmp/protobuf-all-3.6.1.tar.gz
       - cd "protobuf-3.6.1"
