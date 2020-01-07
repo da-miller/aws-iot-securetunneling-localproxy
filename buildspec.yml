@@ -6,7 +6,9 @@ phases:
     runtime-versions:
       python: 3.8
     commands:
-      - apt-get install -y gcc cmake zlibc libssl-dev
+      - apt-get install -y gcc cmake zlibc libssl-dev ccache
+      - mkdir dependencies
+      - cd dependencies
       - wget https://github.com/protocolbuffers/protobuf/releases/download/v3.6.1/protobuf-all-3.6.1.tar.gz -O /tmp/protobuf-all-3.6.1.tar.gz
       - tar xzf /tmp/protobuf-all-3.6.1.tar.gz
       - cd "protobuf-3.6.1"
@@ -15,7 +17,7 @@ phases:
       - cmake ../cmake
       - make
       - make install
-      - cd $CODEBUILD_SRC_DIR #fix this
+      - cd $CODEBUILD_SRC_DIR/dependencies
       - git clone https://github.com/catchorg/Catch2.git
       - cd Catch2
       - mkdir -p build
@@ -23,8 +25,11 @@ phases:
       - cmake ../
       - make
       - make install
-      - wget https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.gz -O /tmp/boost.tar.gz
-      - tar xzf /tmp/boost.tar.gz
+      - cd $CODEBUILD_SRC_DIR/dependencies
+      - mkdir boost
+      - cd boost
+      - wget https://dl.bintray.com/boostorg/release/1.69.0/source/boost_1_69_0.tar.gz -O boost.tar.gz
+      - tar xzf boost.tar.gz
       - cd boost_1_69_0
       - ./bootstrap.sh
       - ./b2 install
@@ -45,3 +50,7 @@ artifacts:
   files:
     - build/*
   discard-paths: yes
+  cache:
+    paths:
+      - $CODEBUILD_SRC_DIR/dependencies/**/*
+      - path
